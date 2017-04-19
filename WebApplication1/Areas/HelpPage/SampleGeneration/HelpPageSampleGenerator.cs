@@ -311,7 +311,7 @@ namespace WebApplication1.Areas.HelpPage
                     string serializedSampleString = reader.ReadToEnd();
                     if (mediaType.MediaType.ToUpperInvariant().Contains("XML"))
                     {
-                        serializedSampleString = TryFormatXml(serializedSampleString);
+                        serializedSampleString = TryFormatJson(serializedSampleString);
                     }
                     else if (mediaType.MediaType.ToUpperInvariant().Contains("JSON"))
                     {
