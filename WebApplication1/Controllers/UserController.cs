@@ -15,8 +15,8 @@ namespace WebApplication1.Controllers
     public class UserController : ApiController
     {
         // GET api/values
-        [Route("api/User/enable")]
-        public string GetUserEnable()
+        [Route("api/User/{username}/{enable}")]
+        public string GetUserEnable(string username, Boolean enable)
         {
 
             Debug.WriteLine("Appel de la méthode " );
@@ -27,11 +27,11 @@ namespace WebApplication1.Controllers
                 PrincipalContext ctx = new PrincipalContext(ContextType.Machine);
 
                 // find a user
-                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, "cesar");
+                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, username);
 
                 if (user != null)
                 {
-                    user.Enabled = true;
+                    user.Enabled = enable;
                     user.Save();
                 }
             }
