@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using WebApplication1.Areas.HelpPage.ModelDescriptions;
-using WebApplication1.Areas.HelpPage.Models;
+using PCStatusApplication.Areas.HelpPage.ModelDescriptions;
+using PCStatusApplication.Areas.HelpPage.Models;
 
-namespace WebApplication1.Areas.HelpPage.Controllers
+namespace PCStatusApplication.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

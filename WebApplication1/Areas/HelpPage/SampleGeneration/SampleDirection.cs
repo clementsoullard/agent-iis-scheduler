@@ -1,4 +1,4 @@
-namespace WebApplication1.Areas.HelpPage
+namespace PCStatusApplication.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

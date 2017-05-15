@@ -9,12 +9,35 @@ using System.Management;
 using System.DirectoryServices.AccountManagement;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
-namespace WebApplication1.Controllers
+
+
+namespace PCStatusApplication.Controllers
 {
+  
+    /**
+     * Controller managing the status of user connection 
+     * 
+     **/
     public class UserController : ApiController
     {
-        // GET api/values
+        [DllImport("wtsapi32.dll", SetLastError = true)]
+
+        static extern bool WTSDisconnectSession(IntPtr hServer, int sessionId, bool bWait);
+        const int WTS_CURRENT_SESSION = -1;
+        static readonly IntPtr WTS_CURRENT_SERVER_HANDLE = IntPtr.Zero;
+
+       /**
+        * This disconnects the current user
+        * */
+        [Route("api/User/disconnect")]
+        public Boolean GetDisconnect()
+        {
+          return  WTSDisconnectSession(WTS_CURRENT_SERVER_HANDLE,
+        WTS_CURRENT_SESSION, true);
+        }
+
         [Route("api/User/{username}/{enable}")]
         public string GetUserEnable(string username, Boolean enable)
         {
@@ -37,14 +60,14 @@ namespace WebApplication1.Controllers
             }
             catch(Exception e)
             {
-                Debug.WriteLine("Exce^ption exceptionnelle "+e);
+                Debug.WriteLine("Exception exceptionnelle "+e);
                
             }
             return "username";
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public StatusWS Get(int id)
         {
             string username = "";
             try
@@ -67,7 +90,11 @@ namespace WebApplication1.Controllers
                 EventLog.WriteEntry("Coucou", "coucou");
             }
 
-            return username;
+            StatusWS status = new StatusWS();
+            status.username = username;
+               return status;
+
+            
         }
 
         // POST api/values

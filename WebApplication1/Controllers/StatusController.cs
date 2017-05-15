@@ -8,13 +8,37 @@ using System.Web.Http;
 using System.Management;
 using System.Diagnostics;
 using System.ComponentModel;
+using PCStatusApplication;
 
-namespace WebApplication1.Controllers
+/**
+ * Controller provider the status of the computer
+ * */
+
+namespace PCStatusApplication.Controllers
 {
+
+
+    public class StatusWS
+    {
+        /**
+         * The usename of the user currently connected
+         * */
+        public String username;
+        /**
+         * If the screen saver is running
+         * */
+        public Boolean screenSaverRunnning;
+        /**
+         * If the screen is locked
+         * */
+        public Boolean screenLocked;
+    }
+
+
     public class StatusController : ApiController
     {
         // GET api/values
-        public string Get()
+        public StatusWS Get()
         {
             string username = "";
             try
@@ -37,36 +61,14 @@ namespace WebApplication1.Controllers
             {
                 EventLog.WriteEntry("Coucou", "coucou");
             }
-
-            return username;
+            StatusWS status = new StatusWS();
+            status.username = username;
+            status.screenLocked = NativeMethods.IsWorkstationLocked();
+            status.screenSaverRunnning = NativeMethods.IsScreensaverRunning();
+             return status;
         }
 
-        // GET api/values/5
-        public string Get(int id)
-        {
-            string username = "";
-            try
-            { 
-            Debug.WriteLine("Passage dans la methode value");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
-            ManagementObjectCollection collection = searcher.Get();
-            
-            for (int i=0;i< collection.Count; i++) { 
-             string valueToAdd= (string)collection.Cast<ManagementBaseObject>().ElementAt(i)["UserName"];
-               username += valueToAdd;
-              Debug.WriteLine("");
-                    EventLog.WriteEntry("Coucou1", "coucou1");
-                }
-                //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            }
-
-            catch(Exception e)
-            {
-                EventLog.WriteEntry("Coucou", "coucou");
-            }
-
-            return username;
-        }
+    
 
         // POST api/values
         public void Post([FromBody]string value)
